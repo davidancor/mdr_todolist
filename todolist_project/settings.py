@@ -25,7 +25,9 @@ SECRET_KEY = '79h9m*a!_ox^p102+pv4gds*ql^!bt+f3u$%d%hm*pu-dp9995'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'mdr-mustdolist.herokuapp.com',
+]
 
 
 # Application definition
