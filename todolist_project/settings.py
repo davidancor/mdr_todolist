@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'mdr-mustdolist.herokuapp.com',
+    'localhost',
 ]
 
 

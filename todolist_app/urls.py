@@ -18,5 +18,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='todolist_home')
+    path('', views.home, name='todolist_home'),
+    path('archive/', views.archive, name='todolist_archive'),
 ]
