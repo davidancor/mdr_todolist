@@ -1,31 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from .models import *
+
+
 # Create your views here.
 
-tasks = [
-	{
-		'title': 'task 1',
-	},
-	{
-		'title': 'task 2',
-	},
-	{
-		'title': 'task 3',
-	},
-	{
-		'title': 'task 4',
-	},
-	{
-		'title': 'task 5',
-	},
-]
-
 def home(request):
-	
-	context = {
-		'tasks': tasks
-	}
-	return render(request, "todolist_app/home.html", context)
+	if request.method=='POST':
+		task=Task(title=request.POST['title'])
+		task.save()
+		return redirect('todolist_home')
+	else:
+		context = { 
+			'tasks': Task.objects.all() 
+			}
+		return render(request, "todolist_app/home.html", context)
 
 def archive(request):
 	return render(request, "todolist_app/archive.html")
