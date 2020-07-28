@@ -1,4 +1,5 @@
 {% extends 'todolist_app/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -18,11 +19,23 @@
                 </div>    
             
             </form>
-            
+             
+
             <ul class="list-group list-group-flush">
-                {% for item in tasks %} 
-                    <li class="list-group-item">{{ item.title }}</li>
-                {% endfor %}
+                {% for task in tasks %}         
+                <li class="list-group-item"> 
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="m-0">{{ task.title }}</p>
+                        <form action="/deleteTask/{{ task.id }}" method='POST'>
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-white" style="width:32px">
+                                <img class="img-fluid" src="{% static 'todolist_app/images/close.png' %}" alt="">
+                            </button>
+                        </form>
+                    </div>
+             
+                </li>
+                {% endfor %}    
             </ul>
         </div>
     </div>
