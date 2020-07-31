@@ -1,4 +1,5 @@
 {% extends 'todolist_app/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -7,12 +8,32 @@
         <div class="col-md-6 offset-md-3">
             <h1>Archive</h1>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-              </ul>
+                {% for task in tasks %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="m-0">{{ task.title }}</p>
+                        <div class="d-flex">
+                            <form action="/deleteTask/{{ task.id }}" method='POST'>
+                                {% csrf_token %}
+                                <input type="hidden" name="last_url" value="{{request.path}}">
+                                <button type="submit" class="btn btn-sm btn-white" style="width:32px">
+                                    <img class="img-fluid" src="{% static 'todolist_app/images/close.png' %}" alt="">
+                                </button>
+                            </form>
+                            
+                            
+                            <form action="/unArchiveTask/{{ task.id }}" method='POST'>
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-white ml-2" style="width:37px">
+                                    <img class="img-fluid" src="{% static 'todolist_app/images/return.png' %}" alt="">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

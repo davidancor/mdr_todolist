@@ -3,39 +3,50 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row"> 
-        <div class="col-md-6 offset-md-3">
+<div class="container my-5" >
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
             <h1>Tasks</h1>
-            <form action="" method="POST">  
+            <form action="" method="POST">
                 {% csrf_token %}
                 <div class="input-group mb-3">
-                    <input name="title" type="text" class="form-control" placeholder="Task" aria-label="Recipient's username"
-                        aria-describedby="button-addon2">
-                        
+                    <input name="title" type="text" class="form-control" placeholder="Task"
+                        aria-label="Recipient's username" aria-describedby="button-addon2">
+
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Add New Task</button>
-                    </div> 
-                </div>    
-            
+                        <button class="btn btn-primary" type="submit" id="button-addon2">Add New Task</button>
+                    </div>
+                </div>
+
             </form>
-             
+
 
             <ul class="list-group list-group-flush">
-                {% for task in tasks %}         
-                <li class="list-group-item"> 
+                {% for task in tasks %}
+                <li class="list-group-item">
                     <div class="d-flex justify-content-between align-items-center">
-                        <p class="m-0">{{ task.title }}</p>
-                        <form action="/deleteTask/{{ task.id }}" method='POST'>
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-white" style="width:32px">
-                                <img class="img-fluid" src="{% static 'todolist_app/images/close.png' %}" alt="">
-                            </button>
-                        </form>
+                        <p class="m-0">
+                            <a onclick="giveIdToModal({{ task.id }}, '{{task.title}}')" href="#" data-toggle="modal" data-target="#exampleModal">{{ task.title }}</a>
+                        </p>
+                        <div class="d-flex">
+                            <form action="/deleteTask/{{ task.id }}" method='POST'>
+                                {% csrf_token %}
+                                <input type="hidden" name="last_url" value="{{request.path}}">
+                                <button type="submit" class="btn btn-sm btn-white" style="width:32px">
+                                    <img class="img-fluid" src="{% static 'todolist_app/images/close.png' %}" alt="">
+                                </button>
+                            </form>
+                            <form action="/archiveTask/{{ task.id }}" method='POST'>
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-white ml-2" style="width:37px">
+                                    <img class="img-fluid" src="{% static 'todolist_app/images/correct.png' %}" alt="">
+                                </button>
+                            </form>
+                        </div>
                     </div>
-             
+
                 </li>
-                {% endfor %}    
+                {% endfor %}
             </ul>
         </div>
     </div>
@@ -43,5 +54,40 @@
 
 
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update-form" action="" method="POST">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input id="update-text-box" name="title" type="text" class="form-control" placeholder="Task"
+                            aria-label="Recipient's username" aria-describedby="button-addon2">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update and Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"> 
+    function giveIdToModal(taskId, taskTitle){
+        document.getElementById("update-form").action="/updateTask/"+ taskId;
+        document.getElementById("update-text-box").value=taskTitle; 
+    };
+</script>
 
 {% endblock content %}
